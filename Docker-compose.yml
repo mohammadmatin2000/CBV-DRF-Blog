@@ -4,7 +4,7 @@ services:
   backend:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
-    container_name: django
+    container_name: backend
     volumes:
       - ./core:/app
     ports:
