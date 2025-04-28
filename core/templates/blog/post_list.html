@@ -8,8 +8,14 @@
     <h1>Post List</h1>
     {% for post in posts %}
     <a href="{% url 'blog:post-detail' pk=post.id %}"><p>{{ post.title }}</p></a>
+    <a href="{% url 'blog:post-update' pk=post.id %}">
+        <h3>Edit</h3>
+    </a>
+    <a href="{% url 'blog:post-delete' pk=post.id %}">
+        <h3>Delete</h3>
+    </a>
     <p>{{ post.content }}</p>
-    <p>{{ post.author }}</p>
+    <p>{{ post.author.first_name }}</p>
     {% endfor %}
     <div class="pagination">
         <span class="step-links">

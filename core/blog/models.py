@@ -1,8 +1,8 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
 
 # Getting the user model object dynamically
-User = get_user_model()
+# User = get_user_model()
 
 # ======================================================================================================================
 class Post(models.Model):
@@ -11,7 +11,7 @@ class Post(models.Model):
     """
 
     image = models.ImageField(null=True, blank=True)  # Optional image field for the post
-    author = models.ForeignKey(User, on_delete=models.CASCADE)  # References the user who created the post
+    author = models.ForeignKey('accounts.Profile', on_delete=models.CASCADE)  # References the user who created the post
     title = models.CharField(max_length=255)  # Stores the post title with a max length of 255 characters
     content = models.TextField()  # Stores the post content as a text field
     category = models.ForeignKey('Category', on_delete=models.CASCADE)  # Links the post to a category
