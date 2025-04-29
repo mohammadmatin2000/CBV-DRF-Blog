@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path,include
 from .views import IndexView, RedirectToMakt, PostDetailView, PostListView, PostFormView, PostUpdateView, PostDeleteView
 
 # ======================================================================================================================
@@ -27,6 +27,8 @@ urlpatterns = [
 
     # Maps '/post-delete/<int:pk>' to the PostDeleteView class-based view, enabling post deletion by primary key
     path('post-delete/<int:pk>', PostDeleteView.as_view(), name='post-delete'),
+
+    path("api/v1/",include("blog.api.v1.urls")),
 ]
 
 # ======================================================================================================================
