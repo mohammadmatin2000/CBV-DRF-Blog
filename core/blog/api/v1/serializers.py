@@ -18,9 +18,9 @@ class PostSerializer(serializers.ModelSerializer):
         Meta class defines the configuration for the serializer.
         """
         model = Post  # Specifies that this serializer is based on the Post model
-        fields = ('id', 'title', 'content', 'status', 'created_date',
+        fields = ('id', 'title', 'image','content', 'status', 'created_date',
                   'updated_date', 'author', 'snippet', 'relative_url',
-                  'absolute_url')  # Defines the fields to be included in the API response
+                  'absolute_url','category')  # Defines the fields to be included in the API response
         read_only_fields = (
         'created_date', 'updated_date')  # Specifies that created_date and updated_date should not be modified
 
@@ -29,8 +29,20 @@ class PostSerializer(serializers.ModelSerializer):
         This method generates the absolute URL for the post using the request context.
         """
         return self.context.get('request').build_absolute_uri(obj.pk)
-
-
+    def to_representation(self, instance):
+        requests=self.context.get('request')
+        rep=super().to_representation(instance)
+        if requests.parser_context.get('kwargs').get('pk'):
+            rep.pop('snippet')
+            rep.pop('relative_url')
+            rep.pop('absolute_url')
+        else:
+            rep.pop('content')
+        rep['category']=CategorySerializer(instance.category,context=self.context.get('request')).data
+        return rep
+    def create(self, validated_data):
+        # validated_data['author']=Profile.objects.get(author=self.context.get('request').user.id)
+        return super().create(validated_data)
 # ======================================================================================================================
 # CategorySerializer: A serializer class for converting Category model instances into JSON format
 class CategorySerializer(serializers.ModelSerializer):
