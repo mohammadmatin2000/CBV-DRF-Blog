@@ -1,7 +1,11 @@
+# general modules
 django==3.2
 python-decouple
 pillow
 djangorestframework
+# third party modules
 markdown
 django-filter
 coreapi
+drf-yasg[validation]
+# deployment moduls
