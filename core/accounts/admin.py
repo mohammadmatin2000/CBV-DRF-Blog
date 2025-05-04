@@ -2,17 +2,16 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User, Profile
 
-
 # ======================================================================================================================
 # Custom Django Admin Configuration for User model
 class CustomUserAdmin(UserAdmin):
     model = User  # Specifies the model that this admin class is based on
 
     # Defines the fields displayed in the admin panel list view
-    list_display = ('email', 'is_staff', 'is_superuser', 'is_active')
+    list_display = ('email', 'is_staff', 'is_superuser', 'is_active','is_verified')
 
     # Fields used for filtering results in the admin panel
-    list_filter = ('email', 'is_staff', 'is_superuser', 'is_active')
+    list_filter = ('email', 'is_staff', 'is_superuser', 'is_active','is_verified')
 
     # Fields used for searching users in the admin panel
     search_fields = ('email',)
@@ -26,7 +25,7 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('email', 'password')
         }),
         ('Permissions', {  # Section for managing access control
-            'fields': ('is_staff', 'is_superuser', 'is_active')
+            'fields': ('is_staff', 'is_superuser', 'is_active','is_verified')
         }),
         ('Group Permissions', {  # Section for assigning group and user permissions
             'fields': ('groups', 'user_permissions')

@@ -14,7 +14,7 @@ class PostModelViewSet(viewsets.ModelViewSet):
     """
     queryset = Post.objects.filter(status=1)  # Retrieves only posts marked as published (status=1)
     serializer_class = PostSerializer  # Uses PostSerializer to convert model instances into JSON format
-    permission_classes = (IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)  # Allows authenticated users to modify posts, while others can only read
+    permission_classes = (IsAuthenticated,IsOwnerOrReadOnly)  # Allows authenticated users to modify posts, while others can only read
     filter_backends = (DjangoFilterBackend,SearchFilter,OrderingFilter)
     filterset_fields = {
         "category":["exact","in"],

@@ -1,12 +1,11 @@
 from rest_framework import serializers
-from ...models import User
 from django.core import exceptions
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
-
+from ...models import User,Profile
 # ======================================================================================================================
-class UserSerializer(serializers.ModelSerializer):
+class CustomRegistrationApiView(serializers.ModelSerializer):
     password1 = serializers.CharField(max_length=255, write_only=True)
 
     class Meta:
@@ -33,7 +32,6 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
-
 # ======================================================================================================================
 class CustomAuthTokenSerializer(serializers.Serializer):
     email = serializers.CharField(
@@ -65,10 +63,31 @@ class CustomAuthTokenSerializer(serializers.Serializer):
             if not user:
                 msg = _('Unable to log in with provided credentials.')
                 raise serializers.ValidationError(msg, code='authorization')
+            if not getattr(user, "is_verified", False):  # ✅ Avoid direct attribute access
+                raise serializers.ValidationError({"detail": "User account is not verified."})
         else:
             msg = _('Must include "username" and "password".')
             raise serializers.ValidationError(msg, code='authorization')
 
         attrs['user'] = user
         return attrs
+# ======================================================================================================================
+class CustomChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True)
+    new_password_confirmation = serializers.CharField(write_only=True)
+    def validate(self, attrs):
+        if attrs.get('new_password') != attrs.get('new_password_confirmation'):
+            raise serializers.ValidationError({'detail': 'Passwords must match'})
+        try:
+            validate_password(attrs.get('new_password'))
+        except exceptions.ValidationError as e:
+            raise serializers.ValidationError({'new_password': e.messages})
+        return attrs
+# ======================================================================================================================
+class CustomProfileUser(serializers.ModelSerializer):
+    email = serializers.CharField(source='user.email', read_only=True)
+    class Meta:
+        model = Profile
+        fields = ('id','email','first_name','last_name','image','designation')
 # ======================================================================================================================
