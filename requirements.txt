@@ -10,3 +10,6 @@ coreapi
 drf-yasg[validation]
 rest_framework_simplejwt
 # deployment moduls
+
+# email third party modules
+django-mail-templated

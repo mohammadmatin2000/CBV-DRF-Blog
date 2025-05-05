@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (RegistrationApiView,CustomAuthToken,CustomDeleteToken,
-                    CustomChangePasswordView,CustomProfileUserView,SendEmailView)
+                    CustomChangePasswordView,CustomProfileUserView,SendEmailView,CustomActivationView,CustomActivationResendView)
 
 from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView, TokenVerifyView)
 
@@ -9,7 +9,11 @@ app_name = 'api-v1'
 urlpatterns = [
     # registeration
     path('registeration/',RegistrationApiView.as_view(),name='register'),
+    # activation
+    path('activation/confirm/<str:token>/',CustomActivationView.as_view(),name='activation'),
 
+    # resend activation
+    path('activation/resend/',CustomActivationResendView.as_view(),name='resend'),
 
     path('test-email',SendEmailView.as_view(),name='test-email'),
 
