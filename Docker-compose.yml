@@ -1,31 +1,43 @@
-version: "3.8"
+version: "3.8"  # Specifies the Docker Compose version
 
 services:
+  # ======================================================================================================================
+  # Backend service configuration
   backend:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
-    container_name: backend
-    volumes:
-      - ./core:/app
-    ports:
-      - "8000:8000"
-    environment:
-      - SECRET_KEY=test
-      - DEBUG=True
-      - ALLOWED_HOSTS=localhost,127.0.0.1
+    build: .  # Uses the current directory as the build context
+    command: python manage.py runserver 0.0.0.0:8000  # Runs the Django development server
+    container_name: backend  # Sets a custom name for the container
 
+    volumes:
+      - ./core:/app  # Mounts the local "core" directory to "/app" inside the container (for persistent data)
+
+    ports:
+      - "8000:8000"  # Maps port 8000 in the container to port 8000 on the host
+
+    environment:
+      - SECRET_KEY=test  # Defines a temporary secret key for testing (replace in production)
+      - DEBUG=True  # Enables Django's debug mode (should be False in production)
+      - ALLOWED_HOSTS=localhost,127.0.0.1  # Defines allowed hosts for Django server access
+
+  # ======================================================================================================================
+  # SMTP mail server (smtp4dev) for testing email functionality
   smtp4dev:
-    image: rnwood/smtp4dev:v3
-    restart: always
-    ports:
-      - '5000:80'
-      - '25:25'
-      - '143:143'
-    volumes:
-      - smtp4dev-data:/smtp4dev
-    environment:
-      - ServerOptions__Urls=http://*:80
-      - ServerOptions__HostName=smtp4dev
+    image: rnwood/smtp4dev:v3  # Uses the official smtp4dev Docker image
+    restart: always  # Ensures the service restarts automatically if it stops
 
+    ports:
+      - '5000:80'  # Maps the web interface to port 5000 on the host
+      - '25:25'  # Exposes SMTP service on port 25 (for sending emails)
+      - '143:143'  # Exposes IMAP service on port 143 (for email retrieval)
+
+    volumes:
+      - smtp4dev-data:/smtp4dev  # Creates a named volume for smtp4dev storage (persistent email data)
+
+    environment:
+      - ServerOptions__Urls=http://*:80  # Configures web access URL
+      - ServerOptions__HostName=smtp4dev  # Defines the hostname for the mail server
+
+# ======================================================================================================================
+# Volume Configuration: Defines persistent storage locations
 volumes:
-  smtp4dev-data:
+  smtp4dev-data:  # Creates a named volume for smtp4dev storage
