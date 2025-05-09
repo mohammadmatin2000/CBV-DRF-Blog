@@ -9,7 +9,6 @@ from mail_templated import EmailMessage
 from rest_framework_simplejwt.tokens import RefreshToken
 import jwt
 from jwt.exceptions import (
-    DecodeError,
     ExpiredSignatureError,
     InvalidSignatureError,
 )
