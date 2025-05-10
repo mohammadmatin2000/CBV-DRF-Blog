@@ -15,4 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Test Output
-      run: false
+      run: docker-compose up -d
+    - name: Run Tests
+      run: docker-compose backend sh -c "pytest ."
