@@ -21,7 +21,10 @@ jobs:
 
     - name: Check Docker Compose version
       run: docker compose version
-
+      
+    - name: Verify Docker Compose File
+      run: ls -l docker-compose.yml
+      
     - name: Start services with Docker Compose
       run: docker compose up --build -d
 
