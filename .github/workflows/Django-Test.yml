@@ -11,7 +11,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Install Docker Compose
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker-compose
 
     - name: Check Docker Compose version
       run: docker compose version
@@ -19,8 +25,8 @@ jobs:
     - name: Start services with Docker Compose
       run: docker compose up --build -d
 
-    - name: Wait for container to be ready
-      run: sleep 15  # or use healthchecks in docker-compose.yml
+    - name: Wait for container healthcheck
+      run: docker compose ps
 
     - name: Show Docker Compose logs (debug)
       run: docker compose logs
