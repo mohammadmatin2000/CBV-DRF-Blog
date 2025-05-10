@@ -13,6 +13,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Run the docker-compose
-      run: docker-compose -f docker-compose.yml up -d
+      run: docker-compose -f Docker-compose.yml up -d
     - name: Test Project
       run: docker exec backend sh -c "pytest"
