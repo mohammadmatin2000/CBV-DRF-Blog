@@ -9,9 +9,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
+
+    - name: Verify Docker Compose File
+      run: ls -l docker-compose.yml  # ✅ Ensure file exists
 
     - name: Install Docker Compose
       run: |
@@ -19,7 +23,13 @@ jobs:
         sudo apt-get install -y docker-compose
 
     - name: Start services with Docker Compose
-      run: docker-compose up -d  # ✅ Runs after installation
+      run: docker compose up --build -d  # ✅ Updated command
+
+    - name: Wait for containers to be ready
+      run: sleep 10  # Optional, healthchecks are better
+
+    - name: Show Docker Compose logs (for debugging)
+      run: docker compose logs
 
     - name: Run Tests
       run: docker compose exec backend sh -c "pytest ."
