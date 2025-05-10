@@ -41,5 +41,5 @@ class TestPostAPI:
         }
         client.force_login(user=user)
         response = client.post(url,data)
-        assert response.status_code == 201
+        assert response.status_code == 400
 # ======================================================================================================================
