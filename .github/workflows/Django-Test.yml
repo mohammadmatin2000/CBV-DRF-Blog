@@ -19,8 +19,11 @@ jobs:
     - name: Start services with Docker Compose
       run: docker compose up --build -d
 
-    - name: Wait for Container
-      run: sleep 10
+    - name: Wait for container to be ready
+      run: sleep 15  # or use healthchecks in docker-compose.yml
+
+    - name: Show Docker Compose logs (debug)
+      run: docker compose logs
 
     - name: Run Tests
-      run:  docker exec it backend sh -c "pytest ."
+      run: docker compose exec backend sh -c "pytest ."
