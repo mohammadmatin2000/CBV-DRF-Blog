@@ -14,22 +14,5 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Verify Docker Compose File
-      run: ls -l docker-compose.yml || echo "docker-compose.yml not found!"  # ✅ Check if the file exists
-
-    - name: Install Docker Compose
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y docker-compose
-
-    - name: Start services with Docker Compose
-      run: docker compose up --build -d  # ✅ Updated command
-
-    - name: Wait for containers to be ready
-      run: docker compose ps  # ✅ Better than sleep
-
-    - name: Show Docker Compose logs (for debugging)
-      run: docker compose logs
-
     - name: Run Tests
       run: docker compose exec backend sh -c "pytest ."
