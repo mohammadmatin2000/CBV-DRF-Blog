@@ -1,4 +1,4 @@
-name: Django Project Test
+name: Django project test
 
 on:
   push:
@@ -7,12 +7,12 @@ on:
     branches: [ "main" ]
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-
-    - name: Run Tests
-      run: docker compose exec backend sh -c "pytest ."
+    - uses: actions/checkout@v4
+    - name: Run the docker-compose
+      run: docker-compose -f docker-compose.yml up -d
+    - name: Test Project
+      run: docker exec backend sh -c "pytest"
