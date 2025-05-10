@@ -14,13 +14,13 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Check Docker Compose version
-      run: docker compose version
+      run: docker-compose version
 
     - name: Start services with Docker Compose
-      run: docker compose up --build -d
+      run: docker-compose up --build -d
 
     - name: Wait for Container
       run: sleep 10
 
     - name: Run Tests
-      run: true
+      run:  docker exec it backend sh -c "pytest ."
