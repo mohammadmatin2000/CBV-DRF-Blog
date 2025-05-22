@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "drf_yasg",  # OpenAPI (Swagger) documentation generator
     "mail_templated",  # Email templating system
     "djoser",  # Authentication and user management API
+    "corsheaders",
 ]
 
 # ======================================================================================================================
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",  # Improves security features
     "django.contrib.sessions.middleware.SessionMiddleware",  # Manages session data
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",  # Handles common request/response operations
     "django.middleware.csrf.CsrfViewMiddleware",  # Protects against CSRF attacks
     "django.contrib.auth.middleware.AuthenticationMiddleware",  # Manages user authentication
@@ -179,4 +181,8 @@ EMAIL_HOST_PASSWORD = (
 )
 EMAIL_USE_TLS = False  # Determines whether TLS security is used
 
+# ======================================================================================================================
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5500",
+]
 # ======================================================================================================================
