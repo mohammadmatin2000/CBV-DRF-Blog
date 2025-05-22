@@ -7,6 +7,7 @@ from .views import (
     PostFormView,
     PostUpdateView,
     PostDeleteView,
+    PostListApiView,
 )
 
 # ======================================================================================================================
@@ -45,6 +46,8 @@ urlpatterns = [
         PostDeleteView.as_view(),
         name="post-delete",
     ),
+    path("post-list/api/", PostListApiView.as_view(), name="post-list"),
+
     path("api/v1/", include("blog.api.v1.urls")),
 ]
 

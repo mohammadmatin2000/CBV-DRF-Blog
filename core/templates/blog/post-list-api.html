@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post List</title>
+</head>
+<body>
+<h1>Post List</h1>
+<ul id="box"></ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $.get("/api/v1/post/", function (data) {
+            wrapper = $("#box")
+            for (const post of data.results) {
+                wrapper.append(`
+                <li>
+                    <a href="${post.absolute_url}">
+                        <h2>${post.title}</h2>
+                    </a>
+                </li>
+            `);
+            }
+            $(".result").html(data);
+            alert("Load was performed.");
+        });
+    </script>
+</body>
+</html>

@@ -10,6 +10,7 @@ coreapi
 drf-yasg[validation]
 rest_framework_simplejwt
 djoser
+django-cors-headers
 # deployment moduls
 
 # email third party modules
