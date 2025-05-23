@@ -3,6 +3,13 @@ version: "3.8"  # Specifies the Docker Compose version
 services:
   # ======================================================================================================================
   # Backend service configuration
+  redis:
+    container_name: redis
+    restart: always
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
   backend:
     build: .  # Uses the current directory as the build context
     command: python manage.py runserver 0.0.0.0:8000  # Runs the Django development server
@@ -18,7 +25,18 @@ services:
       - SECRET_KEY=test  # Defines a temporary secret key for testing (replace in production)
       - DEBUG=True  # Enables Django's debug mode (should be False in production)
       - ALLOWED_HOSTS=localhost,127.0.0.1  # Defines allowed hosts for Django server access
+    depends_on:
+      - redis
 
+  worker1:
+    build: .
+    command: celery -A core worker -l INFO
+    depends_on:
+      - redis
+      - backend
+    volumes:
+      - .:/app
+    working_dir: /app
   # ======================================================================================================================
   # SMTP mail server (smtp4dev) for testing email functionality
   smtp4dev:
