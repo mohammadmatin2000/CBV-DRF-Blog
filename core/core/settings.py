@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security settings
 
 # SECRET_KEY: Stores the secret key securely using environment variables (do not expose in production)
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY",default="test")
 
 # DEBUG: Determines whether the application runs in debug mode (False in production)
 DEBUG = config("DEBUG", default=True, cast=bool)
@@ -17,7 +17,7 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 # ALLOWED_HOSTS: Defines the list of host/domain names allowed to access the application
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")]
-)
+,default="localhost")
 
 # ======================================================================================================================
 # Installed Applications: Defines Django's built-in and third-party apps
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "mail_templated",  # Email templating system
     "djoser",  # Authentication and user management API
     "corsheaders",
+    "django_celery_beat",
 ]
 
 # ======================================================================================================================
@@ -187,6 +188,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 # ======================================================================================================================
 
-CELERY_BROKER_URL = "redis://localhost:6379/1"
+CELERY_BROKER_URL = "redis://redis:6379/0"
 
 # ======================================================================================================================
