@@ -1,0 +1,72 @@
+version: "3.8"  # Specifies the Docker Compose version
+
+services:
+  # ======================================================================================================================
+  # Backend service configuration
+  redis:
+    container_name: redis
+    restart: always
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: .  # Uses the current directory as the build context
+    command: >
+      bash -c "
+        python manage.py makemigrations &&
+        python manage.py migrate &&
+        python manage.py collectstatic --noinput &&
+        gunicorn core.wsgi:application --bind 0.0.0.0:8000
+      "
+
+    container_name: backend  # Sets a custom name for the container
+
+    volumes:
+      - ./core:/app  # Mounts the local "core" directory to "/app" inside the container (for persistent data)
+
+    ports:
+      - "8000:8000"  # Maps port 8000 in the container to port 8000 on the host
+
+    environment:
+      - SECRET_KEY=test  # Defines a temporary secret key for testing (replace in production)
+      - DEBUG=False  # Enables Django's debug mode (should be False in production)
+      - ALLOWED_HOSTS=localhost,127.0.0.1  # Defines allowed hosts for Django server access
+    depends_on:
+      - redis
+
+  worker:
+    build: .
+    command: celery -A core worker --loglevel=info
+
+    volumes:
+      - ./core:/app
+    depends_on:
+      - redis
+      - backend
+
+  # ======================================================================================================================
+  master:
+    image: locustio/locust
+    ports:
+      - "8089:8089"
+    volumes:
+      - ./core/locust:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --master -H http://backend:8000
+
+  workers:
+    image: locustio/locust
+    volumes:
+      - ./core/locust:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --worker --master-host master
+  nginx:
+    image: nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+
+# ======================================================================================================================
+

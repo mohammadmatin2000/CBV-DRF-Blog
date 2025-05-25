@@ -12,6 +12,7 @@ rest_framework_simplejwt
 djoser
 django-cors-headers
 # deployment moduls
+gunicorn
 # email third party modules
 django-mail-templated
 # refactoring and tests
