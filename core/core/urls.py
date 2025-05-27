@@ -6,7 +6,7 @@ from rest_framework.documentation import include_docs_urls
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-
+from django.http import HttpResponse
 # ======================================================================================================================
 # API Documentation Configuration using drf-yasg (Yet Another Swagger Generator)
 schema_view = get_schema_view(
@@ -27,7 +27,8 @@ schema_view = get_schema_view(
         permissions.AllowAny,
     ),  # Grants access to any user without authentication
 )
-
+def index(request):
+    return HttpResponse("<h1>Home Page</h1>")
 # ======================================================================================================================
 # Defining URL patterns for the Django application
 urlpatterns = [
@@ -35,6 +36,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # Blog application URLs
     path("", include("blog.urls")),
+    path("",index,name="index"),
     # User Authentication & Account Management
     path("accounts/", include("accounts.urls")),
     # Django REST framework built-in authentication views (login, logout, etc.)
