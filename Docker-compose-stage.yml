@@ -40,7 +40,6 @@ services:
     environment:
       - SECRET_KEY=test  # Defines a temporary secret key for testing (replace in production)
       - DEBUG=False  # Enables Django's debug mode (should be False in production)
-      - ALLOWED_HOSTS=localhost,127.0.0.1,*  # Defines allowed hosts for Django server access
     depends_on:
       - redis
 

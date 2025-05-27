@@ -15,9 +15,8 @@ SECRET_KEY = config("SECRET_KEY",default="test")
 DEBUG = config("DEBUG", default=True, cast=bool)
 
 # ALLOWED_HOSTS: Defines the list of host/domain names allowed to access the application
-ALLOWED_HOSTS = config(
-    "ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")]
-,default="localhost")
+ALLOWED_HOSTS = ["*"]
+
 
 # ======================================================================================================================
 # Installed Applications: Defines Django's built-in and third-party apps
