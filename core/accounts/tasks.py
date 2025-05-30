@@ -1,9 +1,15 @@
-from celery import shared_task
-from django.http import HttpResponse
-from time import sleep
+from celery import shared_task  # Importing Celery for asynchronous task execution
+from django.http import HttpResponse  # Importing HttpResponse to return an HTML response
+from time import sleep  # Importing sleep to simulate delay
+
 # ======================================================================================================================
-@shared_task
+# Defining an asynchronous task for sending emails
+@shared_task  # Marks this function as a Celery task
 def sendemail():
-    sleep(3)
-    return HttpResponse("<h1>Email sent!</h1>")
+    """
+    Simulates sending an email asynchronously with a 3-second delay.
+    """
+    sleep(3)  # Simulating processing delay before sending the email
+    return HttpResponse("<h1>Email sent!</h1>")  # Returning an HTML response upon completion
+
 # ======================================================================================================================

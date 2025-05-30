@@ -1,20 +1,21 @@
-name: Django project test
+name: Django project test  # Defines the workflow name that appears in GitHub Actions.
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" ]  # Triggers the workflow when changes are pushed to the "main" branch.
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main" ]  # Triggers the workflow when a pull request is opened on the "main" branch.
 
 jobs:
-
   Test:
-    name: Test
-    runs-on: ubuntu-latest
+    name: Test  # Assigns a name to this job for better visibility in GitHub Actions.
+    runs-on: ubuntu-latest  # Specifies that the job will run on the latest version of Ubuntu.
+
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4  # Checks out the repository code to the GitHub runner.
+
     - name: Run the docker-compose
-      run: docker compose -f Docker-compose.yml up -d
+      run: docker compose -f Docker-compose.yml up -d  # Starts the services defined in Docker Compose in detached mode.
+
     - name: Test Project
-      run: docker exec backend sh -c "pytest"
-  
+      run: docker exec backend sh -c "pytest"  # Executes tests inside the "backend" container using pytest.
